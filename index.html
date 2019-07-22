@@ -8,8 +8,14 @@
 
 <script>
 
-$.get("http://api.ipstack.com/check?access_key=9301bf8208457b5fe105aa54a4009d7c", function(res) {
-    $("#loc").html(res.zip);
+var locations = [];
+
+$.get("https://rohitanandbirdeye.github.io/geolocation/test.json", function(res) {
+    locations = res;
+})
+
+$.get("https://api.ipdata.co/?api-key=4b66acfd6d47fb25869319c2b8e50c659748331e691cd3fa093b991c", function(res) {
+    $("#loc").html(res.postal);
 });
 
 </script>
