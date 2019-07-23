@@ -22,7 +22,7 @@
 
 <div class="container-fluid">
     <h3 >Geo Location Demo</h3>
-    <input class="form-control" type="text" placeholder="Pincode will go here" readonly id="loc">
+    <input class="form-control" type="text" placeholder="Detected pincode : " readonly id="loc">
 </div>
 
 <script>
@@ -46,7 +46,7 @@ $.get("https://rohitanandbirdeye.github.io/geolocation/test.json", function(res)
     locations = res;
     
     $.get("https://api.ipdata.co/?api-key=4b66acfd6d47fb25869319c2b8e50c659748331e691cd3fa093b991c", function(res) {
-        $("#loc").attr("placeholder", "Pincode found -> " + res.postal);
+        $("#loc").attr("placeholder", "Detected pincode : " + res.postal);
         
         $.each(locations, function(k, loc) {
             if (loc.latitude && loc.longitude) {
