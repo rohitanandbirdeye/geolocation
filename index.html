@@ -12,7 +12,13 @@
     }
     
     .container-fluid {
-        max-width: 300px;
+        max-width: 500px;
+    }
+    
+    #locations {
+        height: 500px;
+        display: block;
+        overflow: auto;
     }
 </style>
 
@@ -23,13 +29,15 @@
 <div class="container-fluid">
     <h3 >Geo Location Demo</h3>
     <input class="form-control" type="text" placeholder="Detected pincode : " readonly id="loc">
+    <ul class="list-group" id="locations"></ul>
 </div>
 
 <script>
 
 var locations = [];
+var locationsArr = "";
 
-function distance(lat1,lon1,lat2,lon2) {
+function distance(lat1, lon1, lat2, lon2, loc) {
     var R = 6371; // km (change this constant to get miles)
     var dLat = (lat2-lat1) * Math.PI / 180;
     var dLon = (lon2-lon1) * Math.PI / 180;
@@ -38,6 +46,9 @@ function distance(lat1,lon1,lat2,lon2) {
         Math.sin(dLon/2) * Math.sin(dLon/2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c;
+    if (d>1) loc.distDiffKm = Math.round(d)+" km";
+    else if (d<=1) loc.distDiffKm =  Math.round(d*1000)+" m";
+    
     return Math.round(d*1000);
     return d;
 }
@@ -50,7 +61,7 @@ $.get("https://rohitanandbirdeye.github.io/geolocation/test.json", function(res)
         
         $.each(locations, function(k, loc) {
             if (loc.latitude && loc.longitude) {
-                loc.distDiff = distance(loc.latitude, loc.longitude, res.latitude, res.longitude);
+                loc.distDiff = distance(loc.latitude, loc.longitude, res.latitude, res.longitude, loc);
             } else {
                 loc.distDiff = 1000000000;
             }
@@ -59,6 +70,12 @@ $.get("https://rohitanandbirdeye.github.io/geolocation/test.json", function(res)
         locations = locations.sort(function (a, b) {
             return a.distDiff - b.distDiff;
         });
+        
+        $.each(locations, function(k, loc) {
+            locationsArr += '<li class="list-group-item d-flex justify-content-between align-items-center">' + loc.businessAlias + '<span class="badge badge-primary badge-pill">' + loc.distDiffKm + '</span></li>';
+        });
+        
+        $("#locations").html(locationsArr);
     });
 })
 
