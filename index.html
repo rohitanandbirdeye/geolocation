@@ -64,6 +64,7 @@ $.get("https://rohitanandbirdeye.github.io/geolocation/test.json", function(res)
                 loc.distDiff = distance(loc.latitude, loc.longitude, res.latitude, res.longitude, loc);
             } else {
                 loc.distDiff = 1000000000;
+                loc.distDiffKm = "∞ / not known";
             }
         });
         
